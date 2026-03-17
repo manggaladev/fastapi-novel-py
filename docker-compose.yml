@@ -1,0 +1,67 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fastapi-novel-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://noveluser:novelpass@db:5432/noveldb
+      - JWT_SECRET=${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      - JWT_ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - novel-network
+    volumes:
+      - ./alembic:/app/alembic
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  db:
+    image: postgres:16-alpine
+    container_name: fastapi-novel-db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=noveluser
+      - POSTGRES_PASSWORD=novelpass
+      - POSTGRES_DB=noveldb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - novel-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U noveluser -d noveldb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Optional: Adminer for database management
+  adminer:
+    image: adminer:latest
+    container_name: fastapi-novel-adminer
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    networks:
+      - novel-network
+    depends_on:
+      - db
+
+networks:
+  novel-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

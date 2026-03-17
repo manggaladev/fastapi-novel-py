@@ -19,8 +19,74 @@ A FastAPI project for managing novels and chapters. This is a learning project t
 - **Authentication**: JWT (python-jose)
 - **Password Hashing**: bcrypt (passlib)
 - **Validation**: Pydantic
+- **Containerization**: Docker & Docker Compose
 
-## Installation
+## Quick Start with Docker
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Run with Docker Compose
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/manggaladev/fastapi-novel-py.git
+   cd fastapi-novel-py
+   ```
+
+2. Create environment file:
+   ```bash
+   cp .env.example .env
+   # Edit .env and change JWT_SECRET for production!
+   ```
+
+3. Run with Docker Compose:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. The API will be available at:
+   - API: http://localhost:8000
+   - Swagger UI: http://localhost:8000/docs
+   - ReDoc: http://localhost:8000/redoc
+   - Adminer (DB Management): http://localhost:8080
+
+### Docker Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| app | 8000 | FastAPI application |
+| db | 5432 | PostgreSQL database |
+| adminer | 8080 | Database management UI |
+
+### Docker Commands
+
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f app
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (reset database)
+docker-compose down -v
+
+# Rebuild and restart
+docker-compose up -d --build
+
+# Run migrations manually
+docker-compose exec app alembic upgrade head
+
+# Open shell in container
+docker-compose exec app bash
+```
+
+## Installation (Without Docker)
 
 ### Prerequisites
 
@@ -31,7 +97,7 @@ A FastAPI project for managing novels and chapters. This is a learning project t
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/manggaladev/fastapi-novel-py.git
    cd fastapi-novel-py
    ```
 
@@ -54,7 +120,7 @@ A FastAPI project for managing novels and chapters. This is a learning project t
 
 5. Create the PostgreSQL database:
    ```sql
-   CREATE DATABASE novel_db;
+   CREATE DATABASE noveldb;
    ```
 
 6. Run migrations:
@@ -71,6 +137,19 @@ A FastAPI project for managing novels and chapters. This is a learning project t
 | `JWT_SECRET` | Secret key for JWT tokens | Required |
 | `JWT_ALGORITHM` | Algorithm for JWT | `HS256` |
 | `ACCESS_TOKEN_EXPIRE_MINUTES` | Token expiration time | `30` |
+
+### Database URL Formats
+
+```bash
+# PostgreSQL (Docker)
+DATABASE_URL=postgresql://noveluser:novelpass@db:5432/noveldb
+
+# PostgreSQL (Local)
+DATABASE_URL=postgresql://noveluser:novelpass@localhost:5432/noveldb
+
+# SQLite (Testing)
+DATABASE_URL=sqlite:///./test.db
+```
 
 ## Running the Server
 
@@ -177,6 +256,10 @@ fastapi-novel-py/
 │   │   └── __init__.py
 │   └── main.py                  # FastAPI app
 ├── alembic/                     # Migrations
+├── Dockerfile                   # Docker image
+├── docker-compose.yml           # Docker Compose config
+├── docker-entrypoint.sh         # Docker entry script
+├── .dockerignore
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
@@ -208,6 +291,12 @@ alembic upgrade head
 
 ```bash
 alembic downgrade -1
+```
+
+### Docker migrations
+
+```bash
+docker-compose exec app alembic upgrade head
 ```
 
 ## License

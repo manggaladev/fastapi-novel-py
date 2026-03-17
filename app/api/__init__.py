@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from .auth import router as auth_router
-from .novels import router as novels_router
-from .chapters import router as chapters_router
+from .routes.auth import router as auth_router
+from .routes.novels import router as novels_router
+from .routes.chapters import router as chapters_router
 
 api_router = APIRouter()
 

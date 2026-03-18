@@ -301,4 +301,4 @@ docker-compose exec app alembic upgrade head
 
 ## License
 
-MIT
+MIT License - see [LICENSE](LICENSE) file.

@@ -1,108 +1,141 @@
-# 📚 FastAPI Novel API
+<div align="center">
 
-[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=flat-square&logo=fastapi)](https://fastapi.tiangolo.com)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)](https://github.com/manggaladev/fastapi-novel-py)
+# ⚡ FastAPI Novel API
 
-A FastAPI project for managing novels and chapters. This is a learning project to rebuild features from an Express/TypeScript novel-api.
+**A FastAPI implementation for managing novels and chapters - Learning project**
+
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15+-336791?style=for-the-badge&logo=postgresql&logoColor=white)](https://postgresql.org)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+</div>
+
+---
+
+## 🎯 About
+
+This is a **learning project** to rebuild features from an Express/TypeScript novel-api using **FastAPI** and **Python**. Great for comparing Node.js vs Python approaches!
 
 ## ✨ Features
 
-- **🔐 User Authentication** - JWT-based authentication with role-based access control
-- **📚 Novel Management** - CRUD operations for novels with author ownership
-- **📖 Chapter Management** - CRUD operations for chapters with unique constraints
-- **📄 Pagination** - All list endpoints support pagination
-- **⚠️ Error Handling** - Consistent JSON error responses
-- **📖 API Documentation** - Auto-generated OpenAPI docs with Swagger UI and ReDoc
+| Feature | Description |
+|---------|-------------|
+| 🔐 **JWT Auth** | Access & refresh tokens |
+| 👥 **RBAC** | Role-based access control |
+| 📚 **Novels** | CRUD operations |
+| 📖 **Chapters** | CRUD with pagination |
+| 📄 **Pagination** | All list endpoints |
+| 📖 **Auto Docs** | Swagger & ReDoc |
 
-## 🛠️ Tech Stack
-
-- **Framework**: FastAPI
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Migrations**: Alembic
-- **Authentication**: JWT (python-jose)
-- **Password Hashing**: bcrypt (passlib)
-
-## 📦 Installation
-
-### Local Development
+## 🚀 Quick Start
 
 ```bash
-# Clone the repository
+# Clone
 git clone https://github.com/manggaladev/fastapi-novel-py.git
 cd fastapi-novel-py
 
-# Create virtual environment
+# Create venv
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
 
-# Install dependencies
+# Install
 pip install -r requirements.txt
 
-# Copy environment file
-cp .env.example .env
-
-# Run database migrations
+# Setup DB
 alembic upgrade head
 
-# Start the server
+# Run
 uvicorn app.main:app --reload
 ```
 
-### Docker
+## 📖 API Documentation
 
-```bash
-# Build and run
-docker-compose up -d
+| Docs | URL |
+|------|-----|
+| Swagger UI | `http://localhost:8000/docs` |
+| ReDoc | `http://localhost:8000/redoc` |
 
-# Run migrations
-docker-compose exec app alembic upgrade head
+## 📋 Endpoints
+
+### Auth
+```
+POST /auth/register    # Register
+POST /auth/login       # Login
+POST /auth/refresh     # Refresh token
 ```
 
-## 🚀 Usage
+### Novels
+```
+GET  /novels           # List novels
+POST /novels           # Create novel (author)
+GET  /novels/{id}      # Get novel
+PUT  /novels/{id}      # Update novel (owner)
+DELETE /novels/{id}    # Delete novel (owner)
+```
 
-### API Endpoints
+### Chapters
+```
+GET  /novels/{id}/chapters    # List chapters
+POST /novels/{id}/chapters    # Create chapter
+```
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login user |
-| GET | `/novels` | List all novels |
-| POST | `/novels` | Create novel (author) |
-| GET | `/novels/{id}` | Get novel details |
-| PUT | `/novels/{id}` | Update novel (owner) |
-| DELETE | `/novels/{id}` | Delete novel (owner) |
-| GET | `/novels/{id}/chapters` | List chapters |
-| POST | `/novels/{id}/chapters` | Create chapter (owner) |
-
-### API Documentation
-
-- Swagger UI: `http://localhost:8000/docs`
-- ReDoc: `http://localhost:8000/redoc`
-
-## 📁 Project Structure
+## 🏗️ Project Structure
 
 ```
 fastapi-novel-py/
 ├── app/
-│   ├── __init__.py
-│   ├── main.py           # FastAPI app
-│   ├── api/              # API routes
-│   ├── core/             # Config, security
-│   ├── models/           # SQLAlchemy models
-│   ├── schemas/          # Pydantic schemas
-│   └── services/         # Business logic
-├── alembic/              # Migrations
-├── alembic.ini
-├── docker-compose.yml
-├── Dockerfile
+│   ├── main.py          # FastAPI app
+│   ├── api/
+│   │   ├── routes/      # API endpoints
+│   │   └── dependencies/# Auth deps
+│   ├── core/            # Config, security
+│   ├── models/          # SQLAlchemy models
+│   ├── schemas/         # Pydantic schemas
+│   └── services/        # Business logic
+├── alembic/             # Migrations
 ├── requirements.txt
-└── README.md
+└── Dockerfile
 ```
+
+## 🔧 Environment
+
+```env
+DATABASE_URL=postgresql://user:pass@localhost/db
+JWT_SECRET=your-secret-key
+JWT_REFRESH_SECRET=refresh-secret
+```
+
+## 🐳 Docker
+
+```bash
+docker-compose up -d
+```
+
+## 🆚 FastAPI vs Express
+
+| Aspect | FastAPI | Express |
+|--------|---------|---------|
+| Typing | Pydantic | Zod/TypeScript |
+| ORM | SQLAlchemy | Prisma |
+| Docs | Auto | Manual (Swagger) |
+| Async | Native | Promises |
+| Speed | Very Fast | Fast |
+
+## 🤝 Contributing
+
+Contributions welcome!
 
 ## 📄 License
 
 [MIT License](LICENSE)
 
+---
+
+<div align="center">
+
+**[⬆ Back to Top](#-fastapi-novel-api)**
+
+Made with ❤️ by [manggaladev](https://github.com/manggaladev)
+
+</div>

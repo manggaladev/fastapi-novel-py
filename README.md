@@ -106,7 +106,3 @@ fastapi-novel-py/
 
 [MIT License](LICENSE)
 
-## 🔗 Links
-
-- [GitHub Repository](https://github.com/manggaladev/fastapi-novel-py)
-- [Issues](https://github.com/manggaladev/fastapi-novel-py/issues)

@@ -32,7 +32,6 @@ This is a **learning project** to rebuild features from an Express/TypeScript no
 
 ```bash
 # Clone
-git clone https://github.com/manggaladev/fastapi-novel-py.git
 cd fastapi-novel-py
 
 # Create venv
@@ -136,6 +135,5 @@ Contributions welcome!
 
 **[⬆ Back to Top](#-fastapi-novel-api)**
 
-Made with ❤️ by [manggaladev](https://github.com/manggaladev)
 
 </div>
